@@ -1,0 +1,89 @@
+<h1>CMS Application</h1>
+<h3 *ngIf="industryIdToUpdate; else create"> 
+   Update Industry for Id: {{industryIdToUpdate}}
+</h3>
+<ng-template #create>
+   <h3> Create New Industry </h3>
+</ng-template>
+<div>
+ <form [formGroup]="industryForm" (ngSubmit)="onIndustryFormSubmit()">
+  <table>
+    <tr><td>Industry name:</td><td><input formControlName="name">
+	  <label *ngIf="industryForm.get('name').invalid && processValidation" [ngClass] = "'error'"> Name is required. </label>
+    </td></tr>
+   
+    <tr><td colspan="2">
+	  <button *ngIf="!industryIdToUpdate">CREATE</button>  
+	  <button *ngIf="industryIdToUpdate">UPDATE</button>  
+	  <button (click)="backToCreateIndustry()" *ngIf="industryIdToUpdate">Go Back</button>  
+    </td></tr>
+  </table>
+ </form> 
+ <br/>
+ <div *ngIf="statusCode; else processing">
+   <div *ngIf="statusCode === 201" [ngClass] = "'success'">
+	    Article added successfully.
+   </div>   
+   <div *ngIf="statusCode === 409" [ngClass] = "'success'">
+        Article already exists.
+   </div>   	
+   <div *ngIf="statusCode === 200" [ngClass] = "'success'">
+        Article updated successfully.
+   </div>   	      
+   <div *ngIf="statusCode === 204" [ngClass] = "'success'">
+        Article deleted successfully.
+   </div>   	   
+   <div *ngIf="statusCode === 500" [ngClass] = "'error'">
+        Internal Server Error.
+   </div>	
+ </div>
+ <ng-template #processing>
+	<img *ngIf="requestProcessing">
+ </ng-template>
+</div>
+<h3>Industry Details</h3>
+<table>
+  <tr><th> Id</th> <th>Title</th><th></th><th></th></tr>
+      <tr *ngFor="let industry of industryes">
+        <td>{{industry.id}}</td> <td>{{industry.name}}</td> 
+	<td><button type="button" (click)="loadIndustryToEdit(industry.id)">Edit</button> </td> 
+	<td><button type="button" (click)="deleteIndustry(industry.id)">Delete</button></td>
+  </tr>
+</table>  
+<table>
+  {{allIndustry}}
+  <tr><th> Id</th> <th>Industry</th><th></th><th></th></tr>
+      <tr *ngFor="let ind of allIndustry">
+        <td>{{ind.id}}</td> <td>{{ind.name}}</td> 
+	<td><button type="button" (click)="loadIndustryToEdit(ind.id)">Edit</button> </td> 
+	<td><button type="button" (click)="deleteIndustry(ind.id)">Delete</button></td>
+  </tr>
+</table> 
+<!-- 
+<h3>Book Details with Promise </h3>
+<ul>
+  <li *ngFor="let book of books" >
+    Id: Name: {{book.name}}
+  </li>
+</ul>
+<div> -->
+  <!-- <div>
+     <label>Id: </label>
+     <input [(ngModel)]="book" />
+  </div>
+  <div>
+     <label>Name: </label>
+     <input [(ngModel)]="name" />
+  </div> -->
+  
+  <!-- <div>
+    <label> Induastry Name: </label>
+    <p><input type="text" name="name1" [(ngModel)]="name"/></p>
+    
+  </div>
+  <div>
+     <button (click)="addBook()">Add</button>
+  </div>
+</div> 
+<div *ngIf="bookName" [ngClass] = "'success'"> {{bookName}} Added. </div>
+<div *ngIf="errorMessage" [ngClass] = "'error'"> {{errorMessage}} </div>  -->
