@@ -6,19 +6,22 @@ import { HttpModule } from '@angular/http';
 import { AppComponent }  from './app.component';
 import { IndustryComponent } from './industry/industry.component';
 import { IndustryService } from './industry/industry.service';
-
+import { FormsModule }   from '@angular/forms';
+import{RollService} from'./roll.service';
 @NgModule({
   imports: [     
         BrowserModule,
 	HttpModule,
-	ReactiveFormsModule
+  ReactiveFormsModule,
+  FormsModule
   ],
   declarations: [
         AppComponent,
         IndustryComponent
   ],
   providers: [
-    IndustryService
+    IndustryService,
+    RollService
   ],
   bootstrap: [
         AppComponent

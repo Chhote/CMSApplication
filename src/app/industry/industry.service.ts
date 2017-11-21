@@ -4,11 +4,9 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import { Observable } from 'rxjs';
-import 'rxjs/add/operator/toPromise';
 import { Industry } from './industry';
 import{allIndustry} from'./allIndustry';
 import { Injectable } from '@angular/core';
-// import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Http, Response, Headers, URLSearchParams, RequestOptions ,RequestMethod} from '@angular/http';
 
 
@@ -30,30 +28,28 @@ export class IndustryService {
 
 
     private creUrl = "https://staapak-cms.herokuapp.com/content/create_industry";
-    // createbservable(temp: Industry): Observable<Industry> {
-    createbservable(temp: Industry): Observable<number> {    
-          
-        let headersObj = new Headers({ 'Content-Type': 'application/json;'});
-        // let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' });
+    createbservable(temp: Industry): Observable<number> {
+        //Error handel  Access-Control-Allow-Origin
+        let headersObj = new Headers({ 'Content-Type': 'application/json;' });
         headersObj.append('Access-Control-Allow-Origin', 'true');
         headersObj.append('Access-Control-Allow-Credentials', 'true');
         headersObj.append('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT')
         headersObj.append('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
         // console.log(headers)
-      
+
         let options = new RequestOptions({ headers: headersObj });
         let body = JSON.stringify(temp);
         return this._http.post(this.creUrl, body, options)
             .map(this.extractData)
             .catch(this.handleErrorObservable);
-                    
+
     }
-      allUrl="https://staapak-cms.herokuapp.com/content/build_industry "
-    getIndustryAll(): Observable<allIndustry[]> {
-        return this._http.get(this.allUrl)
-            .map(this.extractData)
-          .catch(this.handleErrorObservable);
-    }
+    // allUrl = "https://staapak-cms.herokuapp.com/content/build_industry "
+    // getIndustryAll(): Observable<allIndustry[]> {
+    //     return this._http.post(this.allUrl)
+    //         .map(this.extractData)
+    //         .catch(this.handleErrorObservable);
+    // }
     
     //Fetch article by id
     getIndustryById(industryId: string): Observable<Industry> {
@@ -61,6 +57,27 @@ export class IndustryService {
         let options = new RequestOptions({ headers: cpHeaders });
         console.log(this.byIdurl + "/" + industryId);
         return this._http.get(this.byIdurl + "/" + industryId)
+            .map(this.extractData)
+            .catch(this.handleErrorObservable);
+
+    }
+
+
+
+    private saveInduUrl = "https://staapak-cms.herokuapp.com/content/build_industry";
+    saveIndustry(saveInfo: allIndustry): Observable<number> {
+        //Error handel  Access-Control-Allow-Origin
+        let headersObj = new Headers({ 'Content-Type': 'application/json;' });
+        headersObj.append('Access-Control-Allow-Origin', 'true');
+        headersObj.append('Access-Control-Allow-Credentials', 'true');
+        headersObj.append('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT')
+        headersObj.append('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+        // console.log(headers)
+
+        let options = new RequestOptions({ headers: headersObj });
+        let body = JSON.stringify(saveInfo);
+        console.log(body)
+        return this._http.post(this.saveInduUrl, body, options)
             .map(this.extractData)
             .catch(this.handleErrorObservable);
 
@@ -74,13 +91,12 @@ export class IndustryService {
         let cpHeaders = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: cpHeaders });
         let body = JSON.stringify(indu);
-        console.log(body);
-        return this._http.put(this.updateUrl + "/" + indu.id, body, options)
+        return this._http.put(this.creUrl , body, options)
             .map(success => success.status)
             .catch(this.handleErrorObservable);
     }
 
-    //Delete article	
+    //Delete industry	
     deleteArticleById(industryId: string): Observable<number> {
         let cpHeaders = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: cpHeaders });
