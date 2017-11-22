@@ -62,7 +62,7 @@ export class IndustryService {
 
     }
 
-
+    
 
     private saveInduUrl = "https://staapak-cms.herokuapp.com/content/build_industry";
     saveIndustry(saveInfo: allIndustry): Observable<number> {
@@ -73,17 +73,37 @@ export class IndustryService {
         headersObj.append('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT')
         headersObj.append('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
         // console.log(headers)
-
+        let videoUrl="https://staapak-cms.herokuapp.com/content/create_video";
+        let AudioUrl="https://staapak-cms.herokuapp.com/content/create_audio";
         let options = new RequestOptions({ headers: headersObj });
-        let body = JSON.stringify(saveInfo);
-        console.log(body)
-        return this._http.post(this.saveInduUrl, body, options)
+
+        if(saveInfo.video==""&&saveInfo.audio==""){
+            console.log(saveInfo);
+            let body = JSON.stringify(saveInfo);
+            console.log(body);
+            return this._http.post(this.saveInduUrl, body, options)
+                .map(this.extractData)
+                .catch(this.handleErrorObservable);
+              }
+              else if(saveInfo.audio==""){
+                  console.log('video part')
+                  console.log(saveInfo)
+                  let body = JSON.stringify(saveInfo);
+            return this._http.post(videoUrl, body, options)
             .map(this.extractData)
             .catch(this.handleErrorObservable);
+                
+              }
+        else if(saveInfo.video==""){
+            let body = JSON.stringify(saveInfo);
+            return this._http.post(AudioUrl, body, options)
+            .map(this.extractData)
+            .catch(this.handleErrorObservable);
+        }
 
     }
 
-    private updateUrl = "https://staapak-cms.herokuapp.com/content/industry "
+    // private updateUrl = "https://staapak-cms.herokuapp.com/content/industry "
 
     //Update industry info
     updateIndustry(indu: Industry): Observable<number> {
@@ -133,3 +153,37 @@ export class IndustryService {
 // https://staapak-cms.herokuapp.com/content/industry  all
 
 
+
+   // if(saveInfo.video==""||saveInfo.audio==""){
+        
+        //   }
+
+
+
+        // if (saveInfo.audio == "") {
+            
+        //                 console.log(" if part")
+        //                 let body = JSON.stringify(saveInfo);
+        //                 console.log(body);
+        //                 return this._http.post(this.videoWithAudioUrl, body, options)
+        //                     .map(this.extractData)
+        //                     .catch(this.handleErrorObservable);
+            
+        //             }
+        //             else if (saveInfo.video == "") {
+        //                 console.log(" ELSE IF PAT")
+        //                 let body = JSON.stringify(saveInfo);
+        //                 console.log(body);
+        //                 return this._http.post(this.audioWithAudioUrl, body, options)
+        //                     .map(this.extractData)
+        //                     .catch(this.handleErrorObservable);
+        //             }
+        //             else {
+        //                 console.log(" ELSE part")
+        //                 let body = JSON.stringify(saveInfo);
+        //                 console.log("if part")
+        //                 console.log(body);
+        //                 return this._http.post(this.saveInduUrl, body, options)
+        //                     .map(this.extractData)
+        //                     .catch(this.handleErrorObservable);
+        //             }

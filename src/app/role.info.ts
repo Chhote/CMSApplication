@@ -1,4 +1,4 @@
-export class RollInfo {
+export class RoleInfo {
 
     
     description : string;
@@ -8,4 +8,6 @@ export class RollInfo {
     indus_id: number;
     role_id:number;
     status:string;
+    video:string;
+    audio:string
 }

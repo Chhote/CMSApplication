@@ -7,7 +7,7 @@ import { AppComponent }  from './app.component';
 import { IndustryComponent } from './industry/industry.component';
 import { IndustryService } from './industry/industry.service';
 import { FormsModule }   from '@angular/forms';
-import{RollService} from'./roll.service';
+import{RoleService} from'./role.service';
 @NgModule({
   imports: [     
         BrowserModule,
@@ -21,7 +21,7 @@ import{RollService} from'./roll.service';
   ],
   providers: [
     IndustryService,
-    RollService
+    RoleService
   ],
   bootstrap: [
         AppComponent

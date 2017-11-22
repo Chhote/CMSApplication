@@ -6,6 +6,8 @@ export class allIndustry {
          growth : string;
          indus_id: number;
          status:string;
+         audio:string;
+         video:string;
          constructor(){ }
            
           

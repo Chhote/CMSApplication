@@ -3,16 +3,16 @@ import { IndustryService } from './industry.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Industry } from './industry'
 import { allIndustry } from './allIndustry'
-import { Roll } from '../roll'
-import { RollService } from '../roll.service';
-import{RollInfo} from'../roll.info';
+import { Role } from '../role'
+import { RoleService } from '../role.service';
+import{RoleInfo} from'../role.info';
 @Component({
   selector: 'app-industry',
   templateUrl: './industry.component.html',
   styleUrls: ['./industry.component.css']
 })
 export class IndustryComponent implements OnInit {
-
+  prop = 'Industry';
   //Component properties Industry
   industryes: Industry[];
   allIndustrys: allIndustry[];
@@ -23,20 +23,22 @@ export class IndustryComponent implements OnInit {
   industryValidation = false;
   errorMessage: String;
   //Component properties Roll
-  rollValidation = false;
+  roleValidation = false;
   roleInfoValidation = false;
-  rolls: Roll[];
+  roles: Role[];
   //Create form
   industryForm = new FormGroup({
     name: new FormControl('', Validators.required),
   });
 
   industryInfoForm = new FormGroup({
-    indus_id: new FormControl('', Validators.required),
     // name: new FormControl('', Validators.required),
+    indus_id: new FormControl('', Validators.required),
     employed: new FormControl('', Validators.required),
     growth: new FormControl('', Validators.required),
     req: new FormControl('', Validators.required),
+    video: new FormControl(''),
+    audio: new FormControl(''),
     description: new FormControl(
       //    [
       //   '',Validators.required,
@@ -60,17 +62,19 @@ export class IndustryComponent implements OnInit {
     qual_req: new FormControl('', Validators.required),
     indus_id: new FormControl('', Validators.required),
     skill: new FormControl('', Validators.required),
-    careet_path: new FormControl('', Validators.required),
+    career_path: new FormControl('', Validators.required),
     role_id:new FormControl('', Validators.required),
+    video: new FormControl(''),
+    audio: new FormControl(''),
   
   });
-  constructor(private industryService: IndustryService, private rollServe: RollService) { }
+  constructor(private industryService: IndustryService, private roleServe: RoleService) { }
 
 
   ngOnInit() {
 
     this.fetchIndustry();
-    // this.fetchRoll();
+    this.fetchRole();
   }
 
   fetchIndustry(): void {
@@ -125,7 +129,6 @@ export class IndustryComponent implements OnInit {
     }
     this.preProcessConfigurations();
     let allIndust = this.industryInfoForm.value;
-    // console.log(allIndust);
     this.industryService.saveIndustry(allIndust).subscribe(data =>
       this.statusCode = data)
     this.fetchIndustry();
@@ -133,11 +136,12 @@ export class IndustryComponent implements OnInit {
 
   //Load article by id to edit
   loadIndustryToEdit(industryId: string) {
-    // this.preProcessConfigurations();
+    this.preProcessConfigurations();
     this.industryService.getIndustryById(industryId)
       .subscribe(indus => {
-        this.industryIdToUpdate = indus.name;
-        this.industryForm.setValue({ name: indus.name });
+
+        this.industryIdToUpdate = indus.id;
+        this.industryForm.setValue({ name:name });
         this.processValidation = true;
         this.requestProcessing = false;
       },
@@ -161,29 +165,40 @@ export class IndustryComponent implements OnInit {
   //  Job roll code Strat 
   // *************************
 
-  // fetchRole(): void {
-  //   this.roleServe.getRole()
-  //     .subscribe(roles => this.roles = roles,
-  //     error => this.errorMessage = <any>error);
-  // }
+  fetchRole(): void {
+    this.roleServe.getRole()
+      .subscribe(roles => this.roles = roles,
+      error => this.errorMessage = <any>error);
+  }
 
-  // onRoleFormSubmit() {
-  //   this.rollValidation = true;
-  //   if (this.industryForm.invalid) {
-  //     return; //Validation failed, exit from method.
-  //   }
-  //   //Form is valid, now perform create or update
-  //   this.preProcessConfigurations();
-  //   let roll = this.rollForm.value;
-  //   this.rollServe.createRoll(roll).subscribe(successCode => {
-  //     this.statusCode = successCode;
-  //     this.fetchRoll();
-  //     // this.backToCreateRoll();
-  //   }, errorCode => this.statusCode = errorCode);
-  // }
+  onRoleFormSubmit() {
+    this.roleValidation = true;
+    if (this.roleForm.invalid) {
+      return; //Validation failed, exit from method.
+    }
+    //Form is valid, now perform create or update
+    this.preProcessConfigurations();
+    let role = this.roleForm.value;
+    console.log(role);
+    this.roleServe.createRole(role).subscribe(successCode => {
+      this.statusCode = successCode;
+       this.fetchRole();
+      // this.backToCreateRoll();
+    }, errorCode => this.statusCode = errorCode);
+  }
 
 
-  saveRollInfo() {
+  saveRoleInfo() {
+    this.roleInfoValidation = true;
+    if (this.roleInfoForm.invalid) {
+      return; //Validation failed, exit from method.
+    }
+    this.preProcessConfigurations();
+    let allrole = this.roleInfoForm.value;
+    this.roleServe.saveRoleInfo(allrole).subscribe(data =>
+      this.statusCode = data)
+    this.fetchIndustry();
+    
 
   }
   //Perform preliminary processing configurations
@@ -206,3 +221,12 @@ export class IndustryComponent implements OnInit {
 
 
 
+// function areNullOrUndefined(arr) {
+//   for (var i = 0; i < arr.length; i++) {
+//      var itm = arr[i];
+//      if (itm === null || itm === undefined) {
+//        return true;
+//      }
+//   }
+//   return false;
+// }

@@ -8,12 +8,44 @@ h3 {
 }
 table {
     border-collapse: collapse;
-    columns: 12px;
+    columns: 20px;
 }
 table, th, td {
     border: 1px solid black;
     font-size:17px;
 }
+
+/* table  {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    width:35%;
+  }
+  table, th, td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    width:35%;
+  }
+  table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+  }
+  table tr:nth-child(even) {
+    background-color: #ffffff;
+  } */
+
+table, th , td  {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    width:35%;
+  }
+  table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+  }
+  table tr:nth-child(even) {
+    background-color: #ffffff;
+  }
 textarea {
     width: 225px;
     margin: 6px 0;
@@ -48,32 +80,10 @@ button {
 
 .form-container {
     display:block;
-    width:90%;
+    width:60%;
     padding:2em;
     margin: 2em auto;
     background:#fff;
 }
 
-.mat-table {
-    overflow: auto;
-  }
 
-.align-table .mat-table {
-    display: table;
-    width: 100%;
-}
-
-.align-table .mat-header-row, .align-table .mat-row {
-        display: table-row;
-        padding: 0;
-        border: none;
-}
-
-.align-table .mat-header-cell, .align-table .mat-cell {
-    display: table-cell;
-    height: 48px;
-    vertical-align: middle;
-    padding: 0 8px;
-
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}

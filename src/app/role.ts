@@ -1,4 +1,4 @@
-export  class  Roll{
+export  class  Role{
    
      id:number;
      name:string;

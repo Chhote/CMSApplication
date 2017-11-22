@@ -6,26 +6,32 @@
       <td>Select</td>
     </thead>
     <tbody>
-        <td>
-            <input type="radio" value="1" name="options" [(ngModel)]="options" [value]="true" [checked]="options">Industry
-             <input type="radio" value="2" name="options" [(ngModel)]="options" [value]="false"[checked]="!options">Roll</td> 
-    </tbody>
+        <!-- <td> -->
+            <!-- <input type="radio" value="1" name="options" [(ngModel)]="options" [value]="true" [checked]="options">Industry
+             <input type="radio" value="2" name="options" [(ngModel)]="options" [value]="false"[checked]="!options">Role</td>  -->
+    
+            <div class="radio">
+              <label><input type="radio" [(ngModel)]="prop" name="prop" value="Industry">Industry</label>
+          </div>
+          <div class="radio">
+              <label><input type="radio" [(ngModel)]="prop" name="prop" value="Role">Role</label>
+          </div>
+            </tbody>
   </table>
-
 <h3 *ngIf="industryIdToUpdate; else create"> 
    Update Industry for Id: {{industryIdToUpdate}}
 </h3>
 <ng-template #create  >
-   <h3 *ngIf="options"> Create New Industry </h3>
+   <h3 *ngIf="prop === 'Industry'"> Create New Industry </h3>
 </ng-template>
-<div *ngIf="options">
- <form [formGroup]="industryForm" (ngSubmit)="onIndustryFormSubmit()">
-  <table>
+<div *ngIf="prop === 'Industry'" >
+ <form [formGroup]="industryForm" (ngSubmit)="onIndustryFormSubmit()" >
+  <table class="form-table">
     <tr><td>Industry name:</td><td><input formControlName="name">
 	  <label *ngIf="industryForm.get('name').invalid && processValidation" [ngClass] = "'error'"> Name is required. </label>
     </td></tr>
    
-    <tr><td colspan="12">
+    <tr><td colspan="3">
 	  <button *ngIf="!industryIdToUpdate">CREATE</button>  
 	  <button *ngIf="industryIdToUpdate">UPDATE</button>  
 	  <button (click)="backToCreateIndustry()" *ngIf="industryIdToUpdate">Go Back</button>  
@@ -54,8 +60,8 @@
 	<img *ngIf="requestProcessing">
  </ng-template>
 </div>
-<h3 *ngIf="options">Industry Details</h3>
-<table *ngIf="options">
+<h3 *ngIf="prop === 'Industry'">Industry Details</h3>
+<table *ngIf="prop === 'Industry'">
   <tr><th> Id</th> <th>Title</th><th></th><th></th></tr>
       <tr *ngFor="let industry of industryes">
         <td>{{industry.id}}</td> <td>{{industry.name}}</td> 
@@ -67,10 +73,10 @@
 <br>
 <br>
 <table>
-    <h3 *ngIf="options">Industry Information</h3>
+    <h3 *ngIf="prop === 'Industry'">Industry Information</h3>
 
- <form  [formGroup]="industryInfoForm" (ngSubmit)="saveIndustryInfo()" *ngIf="options">
-    <table>
+ <form  [formGroup]="industryInfoForm" (ngSubmit)="saveIndustryInfo()" *ngIf="prop === 'Industry'">
+    <!-- <table> -->
  <div class="form-container">
 <div class="form-group ">
   <label for="ind">Select Industry</label>
@@ -91,8 +97,8 @@
 <div class="form-group">
     <label for="growth">Growth</label>
     &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  <input type="text"  id="growth"  formControlName="growth" 
-    required>
-  <label *ngIf="industryInfoForm.get('growth').invalid && industryValidation" [ngClass] = "'error'">  Growth is required. </label>
+    >
+  <!-- <label *ngIf="industryInfoForm.get('growth').invalid && industryValidation" [ngClass] = "'error'">  Growth is required. </label> -->
   
   </div>
 
@@ -110,9 +116,18 @@
   <label *ngIf="industryInfoForm.get('req').invalid && industryValidation" [ngClass] = "'error'">  Requirement is required. </label>
   
       </div>
+      <div class="form-group">
+        <label for="video">Video</label>
+        &nbsp;   <input type="text"  id="video"  formControlName="video">
+      </div>
+
+      <div class="form-group">
+        <label for="audio">Audio</label>
+        &nbsp;   <input type="text"  id="audio"   formControlName="audio">
+      </div>
 
       <button type="submit" class="btn btn-success ">Submit</button> </div>
-    </table>
+    <!-- </table> -->
     </form>
 </table>
 
@@ -123,14 +138,14 @@
 
 
 <h3 *ngIf="roleIdToUpdate; else createRole"> 
-    <!-- Update Role for Id: {{industryIdToUpdate}} -->
+    <!-- Update Role for Id: {{roleIdToUpdate}} -->
  </h3>
  <ng-template #createRole  >
-    <h3 *ngIf="!options"> Create New Role </h3>
+    <h3 *ngIf="prop === 'Role'"> Create New Role </h3>
  </ng-template>
- <div *ngIf="!options">
+ <div *ngIf="prop === 'Role'">
   <form [formGroup]="roleForm" (ngSubmit)="onRoleFormSubmit()">
-   <table columns="65">
+   <table  >
      <tr><td >Role name:</td><td><input formControlName="name">
      <label *ngIf="roleForm.get('name').invalid && roleValidation" [ngClass] = "'error'"> Role is required. </label>
      </td></tr>
@@ -164,10 +179,10 @@
    <img *ngIf="requestProcessing">
   </ng-template>
  </div>
- <h3 *ngIf="!options">Role Details</h3>
- <table *ngIf="!options">
+ <h3 *ngIf="prop === 'Role'">Role Details</h3>
+ <table *ngIf="prop === 'Role'">
    <tr><th> Id</th> <th>Title</th><th></th><th></th></tr>
-       <tr *ngFor="let role of industryes">
+       <tr *ngFor="let role of roles">
          <td>{{role.id}}</td> <td>{{role.name}}</td> 
    <td><button type="button" (click)="loadRoleToEdit(role.id)">Edit</button> </td> 
    <td><button type="button" (click)="deleteRole(role.id)">Delete</button></td>
@@ -180,16 +195,15 @@
  <br>
  <br>
  <br>
- <table class="">
-     <h4 *ngIf="!options">Role Information</h4>
-  <form  [formGroup]="roleInfoForm" (ngSubmit)="saveRoleInfo()" *ngIf="!options">
-     <table>
+ <table>
+   <tr><td>   <h3 *ngIf="prop === 'Role'">Role Information</h3></td></tr>
+  <form  [formGroup]="roleInfoForm" (ngSubmit)="saveRoleInfo()" *ngIf="prop === 'Role'">
   <div class="form-container">
  <div class="form-group ">
    <label for="role_id">Select Role</label>
    &nbsp;&nbsp; &nbsp;&nbsp;
    <select  id="role_id" formControlName="role_id"  required >
-      <option *ngFor="let roleInfo of rollsInfo" [value]="roleInfo.role_id">{{roleInfo.name}}</option>
+      <option *ngFor="let roleInfo of roles" [value]="roleInfo.id">{{roleInfo.name}}</option>{{role_id}}{{roles}}
    </select>
    <label *ngIf="roleInfoForm.get('role_id').invalid && roleInfoValidation" [ngClass] = "'error'">  Role is required. </label>
  </div>
@@ -217,10 +231,9 @@
 
        </div>
      <div class="form-group">
-         <label for="careet_path">Career Path</label>
-         &nbsp; &nbsp; &nbsp;<input type="text"  id="careet_path"  required formControlName="careet_path">
+         <label for="career_path">Career Path</label>
+         &nbsp; &nbsp; &nbsp;<input type="text"  id="career_path"  required formControlName="career_path">
    <label *ngIf="roleInfoForm.get('career_path').invalid && roleInfoValidation" [ngClass] = "'error'">  Career Path is required. </label>
-   
        </div>
        <div class="form-group ">
           <label for="ind">Select Industry</label>
@@ -229,7 +242,15 @@
           </select>
           <label *ngIf="roleInfoForm.get('indus_id').invalid && roleInfoValidation" [ngClass] = "'error'">  Industry is required. </label>
         </div>
+        <div class="form-group">
+          <label for="video">Video</label>
+          &nbsp;   <input type="text"  id="video"  formControlName="title">
+        </div>
+  
+        <div class="form-group">
+          <label for="audio">Audio</label>
+          &nbsp;   <input type="text"  id="audio"   formControlName="audio">
+        </div>
        <button type="submit" class="btn btn-success ">Submit</button> </div>
-     </table>
      </form>
  </table>
